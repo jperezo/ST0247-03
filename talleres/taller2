@@ -1,0 +1,22 @@
+def combinacion(cadena, caso_base):
+	
+	if cadena == []:
+		return [caso_base]
+	else:
+		acumulado = []
+		for s in combinacion(cadena[1:], caso_base+[cadena[0]]):
+			acumulado.append(s)
+		for s in combinacion(cadena[1:], caso_base):
+			acumulado.append(s)
+		return acumulado
+
+        
+def main():
+    a = input()
+    a = list(a)
+    print("Combinación:")
+    print(combinacion(a, []))
+    
+if __name__ == "__main__":
+    main()
+    

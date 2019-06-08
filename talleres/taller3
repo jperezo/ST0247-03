@@ -1,0 +1,96 @@
+import copy
+
+def entrada():
+    
+    while True:
+        
+        try:
+            
+            size = int(input())
+            if size == 1:
+                print("solucion trivial")
+                
+            if size <= 3:
+                print("necesito ser mayor o igual a 4")
+                continue
+            
+            return size
+            
+        except ValueError:
+            
+            print("error,")
+
+def caso(size):
+    
+    tablero = [0]*size
+    for xi in range(size):
+        tablero[xi] = [0]*size
+        
+    return tablero
+
+def print_solutions(soluciones, size):
+    
+    for sol in soluciones:
+        
+        for fila in sol:
+            print(fila)
+            
+        print()
+            
+def is_safe(tablero, fila, col, size):
+    
+    for yi in range(col):
+        if tablero[fila][yi] == 1:
+            return False
+    
+    xi, yi = fila, col
+    while xi >= 0 and yi >= 0:
+        if tablero[xi][yi] == 1:
+            return False
+        xi-=1
+        yi-=1
+    
+    xj, yj = fila,col
+    
+    while xj < size and yj >= 0:
+        if tablero[xj][yj] == 1:
+            return False
+            
+        xj+=1
+        yj-=1
+    
+    return True
+
+def n_queen(tablero, col, size):
+    
+    if col >= size:
+        return
+    
+    for i in range(size):
+        if is_safe(tablero, i, col, size):
+            tablero[i][col] = 1
+            
+            if col == size-1:
+                add_solution(tablero)
+                tablero[i][col] = 0
+                return
+            n_queen(tablero, col+1, size)
+            tablero[i][col] = 0
+
+def add_solution(tablero):
+    
+    global soluciones
+    copia_tablero = copy.deepcopy(tablero)
+    soluciones.append(copia_tablero)
+
+size = entrada()
+
+tablero = caso(size)
+
+soluciones = []
+
+n_queen(tablero, 0, size)
+
+print_solutions(soluciones, size)
+
+print("Total soluciones = {}".format(len(soluciones)))

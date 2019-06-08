@@ -1,0 +1,44 @@
+import defaultdict
+
+class GraphAL:
+    
+    def __init__(self):
+        self.nodes = set()
+        self.edges = defaultdict(list)
+        self.distance = {}
+     
+    def addArc(self, vertex, edge, weight):
+        self.edges[vertex].append(edge)
+        self.edges[edge].append(vertex)
+        self.distance[(vertex, edge)] = weight
+        
+    def getSuccesors(self, vertex):
+        return self.edges.get(vertex, default = None)
+    
+    def getWeight(self, from_node, to_node):
+        return self.distance[(from_node, to_node)]
+
+
+class GraphAM:
+    
+    def __init__(self):
+        self.nodes = {}
+        self.edges = []
+        self.edge_list = {}
+        
+    def addArc(self, vertex, edge, weight):
+        self.nodes[vertex] = vertex
+        for row in self.edges:
+	        row.append(0)
+	        self.edges.append([0] * (len(self.edges)+1))
+	        self.edge_list[vertex] = len(self.edge_list)
+			
+        if vertex in self.nodes and edge in self.nodes:
+            self.edges[self.edge_list[vertex]][self.edge_list[edge]] = weight
+            self.edges[self.edge_list[edge]][self.edge_list[vertex]] = weight
+			
+    def getSuccesors(self, vertex):   
+        return self.edge_list[vertex]
+        
+    def getWeight(self, from_node, to_node):
+        return self.edges[self.edge_list[from_node]][self.edge_list[to_node]]   

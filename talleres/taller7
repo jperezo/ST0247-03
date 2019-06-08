@@ -1,0 +1,33 @@
+infinity = float("infinity")
+parents = {}
+procesados = []
+graph = {}
+parents = {}
+
+def find_lowest_cost_node(valores):
+    lowest_cost = infinity
+    lowest_cost_node = None
+    
+    for node in valores:
+        costo = valores[node]
+        if costo < lowest_cost and node not in procesados:
+            lowest_cost = costo
+            lowest_cost_node = node
+    
+    return lowest_cost_node     
+    
+def dijkstra():
+    costos = {}
+    node = find_lowest_cost_node(costos)
+    while node is not None:
+        costos = costos[node]
+        vecinos = graph[node]
+        
+        for n in vecinos.keys():
+            nw_cost = costos + vecinos[n]
+            if costos[n] > nw_cost:
+                costos[n] = nw_cost
+                parents[n] = node
+                
+        procesados.append(node)    
+        node = find_lowest_cost_node(costos)
